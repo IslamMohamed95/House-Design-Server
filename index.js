@@ -4,6 +4,6 @@ require("dotenv").config();
 PORT = process.env.SERVER_PORT;
 TZ = "Asia/Dubai";
 
-app.listen("https://confused-flip-flops-pike.cyclic.app/", () => {
+app.listen(3000, () => {
   console.log(`Server is running on port: ${PORT}`);
 });
