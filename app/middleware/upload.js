@@ -12,7 +12,8 @@ const storage = multer.diskStorage({
   },
 
   filename: function (req, file, cb) {
-    let name = file.originalname;
+    let name =
+      file.filename + "-" + Date.now() + path.extname(file.originalname);
     cb(null, name);
   },
 });
