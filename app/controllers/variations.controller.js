@@ -16,7 +16,7 @@ class variation {
         API: true,
         variation: variation,
         Contract: contract,
-        file: req.file.path,
+        file: req.file,
       });
     } catch (e) {
       res.status(500).send({
