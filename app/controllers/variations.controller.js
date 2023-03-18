@@ -1,5 +1,6 @@
 const variationModel = require("../models/variations.model");
 const contractModel = require("../models/contract.model");
+const path = require("path");
 
 class variation {
   static new = async (req, res) => {
@@ -16,13 +17,11 @@ class variation {
         API: true,
         variation: variation,
         Contract: contract,
-        file: req.file,
       });
     } catch (e) {
       res.status(500).send({
         API: false,
         message: e.message,
-        file: req.file.path,
       });
     }
   };
