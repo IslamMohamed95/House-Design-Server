@@ -16,11 +16,13 @@ class variation {
         API: true,
         variation: variation,
         Contract: contract,
+        file: req.file.path,
       });
     } catch (e) {
       res.status(500).send({
         API: false,
         message: e.message,
+        file: req.file.path,
       });
     }
   };
