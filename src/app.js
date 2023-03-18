@@ -26,11 +26,11 @@ app.use("/visitor", visitorRoute);
 app.use("/sales", salesRoute);
 app.use("/variation", variationRoute);
 
-// app.get("*", (req, res) => {
-//   res.status(404).send({
-//     API: false,
-//     message: "Invalid Link !..",
-//   });
-// });
+app.get("*", (req, res) => {
+  res.status(404).send({
+    API: false,
+    message: "Invalid Link !..",
+  });
+});
 
 module.exports = app;
