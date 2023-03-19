@@ -1,4 +1,5 @@
 require("../app/db/dbConnection");
+const path = require("path");
 const express = require("express");
 const cors = require("cors");
 
@@ -15,7 +16,7 @@ const visitorRoute = require("../app/routers/visitors.route");
 const salesRoute = require("../app/routers/sales.route");
 const variationRoute = require("../app/routers/variations.route");
 
-app.use("/uploads", express.static("uploads"));
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 app.use("/master", masterRoute);
 app.use("/user", userRoute);
 app.use("/contract", contractRoute);
