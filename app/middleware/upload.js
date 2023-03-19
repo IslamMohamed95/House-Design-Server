@@ -6,7 +6,7 @@ const storage = multer.diskStorage({
   destination: function (req, file, cb) {
     let loc = "uploads";
     fs.mkdir(loc, (err) => {});
-    cb(null, loc);
+    cb(null, __dirname + loc);
   },
   filename: function (req, file, cb) {
     let name = file.originalname;
