@@ -1,9 +1,10 @@
 require("../app/db/dbConnection");
+const path = require("path");
 const express = require("express");
 const cors = require("cors");
 
 const app = express();
-
+app.use(express.static(path.join(__dirname, "uploads")));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors());
@@ -21,7 +22,6 @@ app.use("/contract", contractRoute);
 app.use("/visitor", visitorRoute);
 app.use("/sales", salesRoute);
 app.use("/variation", variationRoute);
-app.use(express.static("/uploads"));
 
 app.get("*", (req, res) => {
   res.status(404).send({
