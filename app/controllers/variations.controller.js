@@ -4,9 +4,10 @@ const contractModel = require("../models/contract.model");
 class variation {
   static new = async (req, res) => {
     try {
+      console.log(req.file);
       const variation = new variationModel({
         contract_id: req.params.id,
-        file: req.file,
+        file: req.file.path,
       });
       await variation.save();
       let contract = await contractModel.findByIdAndUpdate(req.params.id, {
@@ -20,7 +21,7 @@ class variation {
     } catch (e) {
       res.status(500).send({
         API: false,
-        message: e.message,
+        message: "false",
       });
     }
   };

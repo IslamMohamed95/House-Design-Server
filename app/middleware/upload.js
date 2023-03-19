@@ -8,6 +8,7 @@ const storage = multer.diskStorage({
     if (!req.master) loc = "uploads/master";
     else loc = path.join("uploads", req.master.name.toString());
     fs.mkdir(loc, (err) => {});
+
     cb(null, loc);
   },
 
@@ -17,7 +18,7 @@ const storage = multer.diskStorage({
   },
 });
 
-const upload = multer({
+var upload = multer({
   storage,
 });
 
