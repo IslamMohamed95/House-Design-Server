@@ -16,13 +16,13 @@ const visitorRoute = require("../app/routers/visitors.route");
 const salesRoute = require("../app/routers/sales.route");
 const variationRoute = require("../app/routers/variations.route");
 
-app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 app.use("/master", masterRoute);
 app.use("/user", userRoute);
 app.use("/contract", contractRoute);
 app.use("/visitor", visitorRoute);
 app.use("/sales", salesRoute);
 app.use("/variation", variationRoute);
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 app.get("*", (req, res) => {
   res.status(404).send({
