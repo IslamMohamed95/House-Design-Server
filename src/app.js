@@ -15,6 +15,7 @@ const contractRoute = require("../app/routers/contract.route");
 const visitorRoute = require("../app/routers/visitors.route");
 const salesRoute = require("../app/routers/sales.route");
 const variationRoute = require("../app/routers/variations.route");
+
 app.use("uploads", express.static("uploads"));
 app.use("/master", masterRoute);
 app.use("/user", userRoute);
