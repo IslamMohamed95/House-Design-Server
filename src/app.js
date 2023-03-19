@@ -7,7 +7,6 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors());
-app.use(express.static("uploads"));
 
 const masterRoute = require("../app/routers/master.route");
 const userRoute = require("../app/routers/user.route");
@@ -16,7 +15,7 @@ const visitorRoute = require("../app/routers/visitors.route");
 const salesRoute = require("../app/routers/sales.route");
 const variationRoute = require("../app/routers/variations.route");
 
-app.use("uploads", express.static("uploads"));
+app.use("/uploads", express.static("uploads"));
 app.use("/master", masterRoute);
 app.use("/user", userRoute);
 app.use("/contract", contractRoute);
