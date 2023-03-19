@@ -22,7 +22,7 @@ app.use("/contract", contractRoute);
 app.use("/visitor", visitorRoute);
 app.use("/sales", salesRoute);
 app.use("/variation", variationRoute);
-app.use("/uploads", express.static("uploads"));
+app.use("/uploads", express.static("/uploads"));
 
 app.get("*", (req, res) => {
   res.status(404).send({
