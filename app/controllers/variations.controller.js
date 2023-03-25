@@ -62,7 +62,7 @@ class variation {
   static fileDownload = async (req, res) => {
     try {
       const file = await variationModel.findById(req.params.id);
-      console.log(file.file.filename);
+      console.log(file.file);
       res.download(file.file.filename);
     } catch (e) {
       res.status(500).send({
