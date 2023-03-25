@@ -63,7 +63,7 @@ class variation {
     try {
       const file = await variationModel.findById(req.params.id);
       console.log(file.file);
-      res.download(file.file.filename);
+      res.download(`/temp/uploads/${file.file.originalname}`);
     } catch (e) {
       res.status(500).send({
         API: false,
