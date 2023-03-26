@@ -5,7 +5,7 @@ const fs = require("fs");
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
     let loc;
-    if (!req.user) loc = "uploads/";
+    if (!req.master) loc = "uploads/";
     else loc = "uploads/";
     fs.mkdir(loc, (err) => {});
     cb(null, loc);
