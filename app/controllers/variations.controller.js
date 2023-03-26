@@ -6,7 +6,7 @@ class variation {
     try {
       const variation = new variationModel({
         contract_id: req.params.id,
-        file: req.file,
+        file: "uploads/" + req.file.filename,
       });
       await variation.save();
       let contract = await contractModel.findByIdAndUpdate(req.params.id, {
@@ -63,7 +63,7 @@ class variation {
     try {
       const file = await variationModel.findById(req.params.id);
       console.log(file.file);
-      res.download(`./uploads/${file.file.filename}`);
+      res.download(`/uploads/${file.file.filename}`);
     } catch (e) {
       res.status(500).send({
         API: false,
