@@ -1,12 +1,12 @@
 require("../app/db/dbConnection");
-const path = require("path");
+
 const express = require("express");
 const cors = require("cors");
 
 const app = express();
+app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(cors());
 
 const masterRoute = require("../app/routers/master.route");
 const userRoute = require("../app/routers/user.route");
