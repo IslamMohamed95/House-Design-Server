@@ -20,7 +20,7 @@ class variation {
     } catch (e) {
       res.status(500).send({
         API: false,
-        message: e.message,
+        message: "bad",
       });
     }
   };
@@ -62,8 +62,10 @@ class variation {
   static fileDownload = async (req, res) => {
     try {
       const file = await variationModel.findById(req.params.id);
-      console.log(file.file);
-      res.download(`/uploads/${file.file.filename}`);
+      fs.readFile(file.file, (err, data) => {
+        res.contentType("application/pdf");
+        res.send(data);
+      });
     } catch (e) {
       res.status(500).send({
         API: false,
