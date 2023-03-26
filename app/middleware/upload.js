@@ -7,7 +7,7 @@ const storage = multer.diskStorage({
     console.log(req.master);
     let loc;
     if (!req.master) loc = "uploads/";
-    else loc = "uploads/";
+    else loc = path.join("uploads", req.master._id.toString());
     fs.mkdir(loc, (err) => {});
     cb(null, loc);
   },

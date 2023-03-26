@@ -6,7 +6,7 @@ class variation {
     try {
       const variation = new variationModel({
         contract_id: req.params.id,
-        file: req.file.path,
+        file: "uploads/" + req.master._id + "/" + req.file.filename,
       });
       await variation.save();
       let contract = await contractModel.findByIdAndUpdate(req.params.id, {
