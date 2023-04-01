@@ -1,13 +1,13 @@
 const variationModel = require("../models/variations.model");
 const contractModel = require("../models/contract.model");
-const path = require("path");
+const fs = require("fs");
 
 class variation {
   static new = async (req, res) => {
     try {
       const variation = new variationModel({
         contract_id: req.params.id,
-        file: req.file,
+        file: "uploads/" + req.master._id + "/" + req.file.filename,
       });
       await variation.save();
       let contract = await contractModel.findByIdAndUpdate(req.params.id, {
@@ -63,7 +63,10 @@ class variation {
   static fileDownload = async (req, res) => {
     try {
       const file = await variationModel.findById(req.params.id);
-      res.download(`./uploads/master/${file.file.filename}`);
+      fs.readFile(file.file, (err, data) => {
+        res.contentType("application/pdf");
+        res.send(data);
+      });
     } catch (e) {
       res.status(500).send({
         API: false,
