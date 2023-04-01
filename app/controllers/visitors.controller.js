@@ -18,6 +18,21 @@ class visitor {
       });
     }
   };
+
+  static visitors = async (req, res) => {
+    try {
+      var visitors = await visitorModel.find();
+      res.status(200).send({
+        API: true,
+        visitors,
+      });
+    } catch (e) {
+      res.status(500).send({
+        API: false,
+        message: e.message,
+      });
+    }
+  };
 }
 
 module.exports = visitor;
