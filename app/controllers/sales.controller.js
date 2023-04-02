@@ -14,6 +14,7 @@ class sales {
       await sale.save();
       res.status(200).send({
         API: true,
+        // data: month_Arra,
       });
     } catch (e) {
       res.status(500).send({
@@ -29,10 +30,12 @@ class sales {
       let salesAchievements = [];
 
       const sales = await salesModel.find();
-      sales.map((s) => {
+      sales.forEach((s) => {
         salesName.push(s.name);
         salesAchievements.push(s.annual_achieving);
+        Sales_Histories.push(s.history);
       });
+
       salesAchievements.push(req.master.annual_target);
       res.status(200).send({
         API: true,
