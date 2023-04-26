@@ -1,10 +1,11 @@
 const multer = require("multer");
 const path = require("path");
 const fs = require("fs");
+
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    let loc = "/tmp/uploads";
-    fs.mkdir(loc, (err) => {});
+    let loc;
+    loc = "uploads/";
     cb(null, loc);
   },
   filename: function (req, file, cb) {
@@ -13,6 +14,7 @@ const storage = multer.diskStorage({
     cb(null, name);
   },
 });
+
 var upload = multer({
   storage,
 });

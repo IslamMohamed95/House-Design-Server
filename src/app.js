@@ -1,11 +1,18 @@
 require("../app/db/dbConnection");
 const express = require("express");
 const cors = require("cors");
+
 const app = express();
-app.use(cors());
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(express.static("uploads"));
+app.use(
+  cors({
+    origin: "*",
+  })
+);
+// app.use(express.static("uploads"));
+
 const masterRoute = require("../app/routers/master.route");
 const userRoute = require("../app/routers/user.route");
 const contractRoute = require("../app/routers/contract.route");
@@ -18,10 +25,12 @@ app.use("/contract", contractRoute);
 app.use("/visitor", visitorRoute);
 app.use("/sales", salesRoute);
 app.use("/variation", variationRoute);
+
 app.get("*", (req, res) => {
   res.status(404).send({
     API: false,
     message: "Invalid Link !..",
   });
 });
+
 module.exports = app;
