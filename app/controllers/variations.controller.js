@@ -1,13 +1,17 @@
 const variationModel = require("../models/variations.model");
 const contractModel = require("../models/contract.model");
 const fs = require("fs");
+const path = require("path");
 
 class variation {
   static new = async (req, res) => {
     try {
       const variation = new variationModel({
         contract_id: req.params.id,
-        file: "uploads/" + req.master._id + "/" + req.file.filename,
+        file: {
+          name: req.file.originalname,
+          path: "uploads/" + req.file.filename,
+        },
       });
       await variation.save();
       let contract = await contractModel.findByIdAndUpdate(req.params.id, {
@@ -62,10 +66,18 @@ class variation {
 
   static fileDownload = async (req, res) => {
     try {
-      const file = await variationModel.findById(req.params.id);
-      fs.readFile(file.file, (err, data) => {
-        res.contentType("application/pdf");
-        res.send(data);
+      var file = await variationModel.findById(req.params.id);
+      const filePath = file.file.path;
+      fs.readFile(filePath, (err, data) => {
+        if (err) {
+          console.error(err);
+          res.statusCode = 500;
+          res.end("Internal Server Error");
+          return;
+        }
+        res.setHeader("Content-Type", "application/pdf");
+        res.setHeader("Content-Disposition", `attachment; filename=file.pdf`);
+        res.end(data);
       });
     } catch (e) {
       res.status(500).send({

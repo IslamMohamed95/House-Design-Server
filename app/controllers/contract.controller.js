@@ -58,7 +58,10 @@ class contract {
       salesmen.map(async (s) => {
         if (s.name === req.body.sale_executive) {
           let newData;
-          date = new Date(req.body.start_date).getMonth() + 1;
+          date = new Date(req.body.start_date);
+          date = date.toLocaleString("en-US", {
+            month: "short",
+          });
           s.annual_achieving += req.body.total_cost;
           for (let i = 0; i <= s.history.length; i++) {
             if (i < s.history.length && s.history[i].month == date) {
