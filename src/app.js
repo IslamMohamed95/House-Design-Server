@@ -1,6 +1,7 @@
 require("../app/db/dbConnection");
 const express = require("express");
 const cors = require("cors");
+const fileupload = require("express-fileupload");
 
 const app = express();
 
@@ -11,7 +12,12 @@ app.use(
     origin: "*",
   })
 );
-app.use(express.static("temp"));
+app.use(
+  fileupload({
+    useTempFiles: true,
+    tempFileDir: "/temp",
+  })
+);
 
 const masterRoute = require("../app/routers/master.route");
 const userRoute = require("../app/routers/user.route");
