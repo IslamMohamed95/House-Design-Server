@@ -10,7 +10,7 @@ class variation {
         contract_id: req.params.id,
         file: {
           name: req.file.originalname,
-          path: "uploads/" + req.file.filename,
+          path: "temp/uploads/" + req.file.filename,
         },
       });
       await variation.save();
