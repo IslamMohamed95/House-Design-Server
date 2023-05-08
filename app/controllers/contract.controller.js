@@ -296,6 +296,24 @@ class contract {
       });
     }
   };
+
+  static userContracts = async (req, res) => {
+    try {
+      const contracts = await contractModel.find({
+        user_code: req.params.code,
+      });
+
+      res.status(200).send({
+        API: true,
+        data: contracts,
+      });
+    } catch (e) {
+      res.status(500).send({
+        API: false,
+        message: e.message,
+      });
+    }
+  };
 }
 
 module.exports = contract;

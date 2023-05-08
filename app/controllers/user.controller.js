@@ -1,6 +1,7 @@
 const userModel = require("../models/user.model");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
+const contractModel = require("../models/contract.model");
 
 class user {
   static register = async (req, res) => {
@@ -50,8 +51,40 @@ class user {
       await account.save();
       res.status(200).send({
         API: true,
+        user: req.user,
         token: token,
+        code: account.code,
         message: "Logged successfully",
+      });
+    } catch (e) {
+      res.status(500).send({
+        API: false,
+        message: e.message,
+      });
+    }
+  };
+
+  static profile = async (req, res) => {
+    try {
+      res.send(req.user);
+    } catch (e) {
+      res.status(500).send({
+        API: false,
+        message: e.message,
+      });
+    }
+  };
+
+  static logout = async (req, res) => {
+    try {
+      console.log(res.user);
+      req.user.tokens = req.user.tokens.filter((t) => {
+        return t.token !== req.token;
+      });
+      await req.user.save();
+      res.status(200).send({
+        API: true,
+        message: "Logged out successfully",
       });
     } catch (e) {
       res.status(500).send({
@@ -92,6 +125,20 @@ class user {
       });
     }
   };
+
+  // static Pause = async (req, res) => {
+  //   try {
+  //     const contract = await contractModel.findByIdAndUpdate(
+  //       { _id: req.params.id },
+  //       {}
+  //     );
+  //   } catch (e) {
+  //     res.status(500).send({
+  //       API: false,
+  //       message: e.message,
+  //     });
+  //   }
+  // };
 }
 
 module.exports = user;

@@ -8,12 +8,8 @@ route.post("/edit/:id", auth("Master"), contractController.edit);
 route.post("/seen/:id", contractController.seen);
 
 route.get("/contracts", auth("Master"), contractController.contracts);
-route.get(
-  "/userContracts/:code",
-  auth("Master"),
-  contractController.userContracts
-);
+route.get("/userContracts/:code", contractController.userContracts);
 route.get("/notes/:id", auth("Master"), contractController.clientNotes);
-route.get("/sendContract/:id", auth("Master"), contractController.sendContract);
+route.get("/sendContract/:id", contractController.sendContract);
 
 module.exports = route;
