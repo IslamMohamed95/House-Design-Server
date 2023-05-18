@@ -85,10 +85,8 @@ class contract {
       masters.forEach((m) => {
         contract_num.forEach((c) => {
           if (
-            c.history.slice(-1)[0].status === "pending" ||
             c.history.slice(-1)[0].status === "completed" ||
-            c.history.slice(-1)[0].status === "process 1" ||
-            c.history.slice(-1)[0].status === "process 2"
+            c.history.slice(-1)[0].status === "under construction"
           ) {
             pending.push(c);
           } else if (c.history.slice(-1)[0].status === "finished") {
@@ -140,7 +138,7 @@ class contract {
       });
       res.status(200).send({
         API: true,
-        contracts: contracts,
+        data: contracts,
       });
     } catch (e) {
       res.status(500).send({
@@ -160,10 +158,8 @@ class contract {
       let contract_num = await contractModel.find();
       masters.forEach((m) => {
         if (
-          contract.history.slice(-1)[0].status === "pending" ||
           contract.history.slice(-1)[0].status === "completed" ||
-          contract.history.slice(-1)[0].status === "process 1" ||
-          contract.history.slice(-1)[0].status === "process 2"
+          contract.history.slice(-1)[0].status === "under construction"
         ) {
           m.pending_contracts -= 1;
         } else if (contract.history.slice(-1)[0].status === "finished") {
@@ -208,10 +204,8 @@ class contract {
       masters.forEach((m) => {
         contracts.forEach((c) => {
           if (
-            c.history.slice(-1)[0].status === "pending" ||
             c.history.slice(-1)[0].status === "completed" ||
-            c.history.slice(-1)[0].status === "process 1" ||
-            c.history.slice(-1)[0].status === "process 2"
+            c.history.slice(-1)[0].status === "under construction"
           ) {
             pending.push(c);
           } else if (c.history.slice(-1)[0].status === "finished") {

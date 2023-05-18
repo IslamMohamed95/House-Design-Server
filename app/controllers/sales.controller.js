@@ -105,6 +105,22 @@ class sales {
       });
     }
   };
+
+  static delete = async (req, res) => {
+    try {
+      await salesModel.findByIdAndDelete({ _id: req.params.id });
+      const allSales = await salesModel.find();
+      res.status(200).send({
+        API: true,
+        data: allSales,
+      });
+    } catch (e) {
+      res.status(500).send({
+        API: false,
+        message: e.message,
+      });
+    }
+  };
 }
 
 module.exports = sales;

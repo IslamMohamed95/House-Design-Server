@@ -55,6 +55,22 @@ class master {
     }
   };
 
+  static reset = async (req, res) => {
+    try {
+      req.master.password = req.body.password;
+      req.master.save();
+      res.status(200).send({
+        API: true,
+        user: req.master,
+      });
+    } catch (e) {
+      res.status(500).send({
+        API: false,
+        message: e.message,
+      });
+    }
+  };
+
   static logout = async (req, res) => {
     try {
       req.master.tokens = req.master.tokens.filter((t) => {
