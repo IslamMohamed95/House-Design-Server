@@ -57,11 +57,19 @@ class master {
 
   static reset = async (req, res) => {
     try {
-      req.master.password = req.body.password;
-      req.master.save();
+      req.body.password = await bcrypt.hash(req.body.password, 10);
+      const account = await masterModel.findOneAndUpdate(
+        {
+          email: req.body.email,
+        },
+        {
+          password: req.body.password,
+        }
+      );
+      if (!account) throw new Error("Email is not exist!");
+      account.save();
       res.status(200).send({
         API: true,
-        user: req.master,
       });
     } catch (e) {
       res.status(500).send({

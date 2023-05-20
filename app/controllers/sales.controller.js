@@ -48,7 +48,7 @@ class sales {
       ];
       const sale = new salesModel({
         ...req.body,
-        annual_target: req.master.annual_target,
+        annual_target: req.body.monthly_target * 12,
         monthly_target: req.body.monthly_target,
         history: histories,
       });

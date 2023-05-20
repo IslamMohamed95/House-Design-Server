@@ -29,10 +29,7 @@ const masterSchema = new mongoose.Schema(
       required: true,
       default: "Master",
     },
-    annual_target: {
-      type: Number,
-      required: true,
-    },
+
     total_contracts: {
       type: Number,
       default: 0,
