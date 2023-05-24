@@ -45,7 +45,7 @@ const contractSchema = new mongoose.Schema(
         status: {
           type: String,
           required: true,
-          enum: ["canceled", "under construction", "completed", "finished"],
+          enum: ["canceled", "under construction", "completed"],
         },
         start_date: { type: String },
         end_date: { type: String },

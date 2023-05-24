@@ -157,12 +157,9 @@ class contract {
       let masters = await masterModel.find();
       let contract_num = await contractModel.find();
       masters.forEach((m) => {
-        if (
-          contract.history.slice(-1)[0].status === "completed" ||
-          contract.history.slice(-1)[0].status === "under construction"
-        ) {
+        if (contract.history.slice(-1)[0].status === "under construction") {
           m.pending_contracts -= 1;
-        } else if (contract.history.slice(-1)[0].status === "finished") {
+        } else if (contract.history.slice(-1)[0].status === "completed") {
           m.completed_contracts -= 1;
         } else if (contract.history.slice(-1)[0].status === "canceled") {
           m.canceled_contracts -= 1;
@@ -203,12 +200,9 @@ class contract {
       const masters = await masterModel.find();
       masters.forEach((m) => {
         contracts.forEach((c) => {
-          if (
-            c.history.slice(-1)[0].status === "completed" ||
-            c.history.slice(-1)[0].status === "under construction"
-          ) {
+          if (c.history.slice(-1)[0].status === "under construction") {
             pending.push(c);
-          } else if (c.history.slice(-1)[0].status === "finished") {
+          } else if (c.history.slice(-1)[0].status === "completed") {
             completed.push(c);
           } else if (c.history.slice(-1)[0].status === "canceled") {
             canceled.push(c);
