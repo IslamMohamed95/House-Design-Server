@@ -84,12 +84,9 @@ class contract {
 
       masters.forEach((m) => {
         contract_num.forEach((c) => {
-          if (
-            c.history.slice(-1)[0].status === "completed" ||
-            c.history.slice(-1)[0].status === "under construction"
-          ) {
+          if (c.history.slice(-1)[0].status === "under construction") {
             pending.push(c);
-          } else if (c.history.slice(-1)[0].status === "finished") {
+          } else if (c.history.slice(-1)[0].status === "completed") {
             completed.push(c);
           } else if (c.history.slice(-1)[0].status === "canceled") {
             canceled.push(c);
@@ -151,9 +148,18 @@ class contract {
   static delete = async (req, res) => {
     try {
       const contract = await contractModel.findById(req.params.id);
+      const target = await contractModel.find({
+        user_code: contract.user_code,
+      });
+      if (target.length === 1) {
+        const user = await userModel.findOneAndDelete({
+          code: contract.user_code,
+        });
+      }
       await contractModel.findOneAndDelete({
         _id: req.params.id,
       });
+
       let masters = await masterModel.find();
       let contract_num = await contractModel.find();
       masters.forEach((m) => {
