@@ -5,7 +5,13 @@ const bcrypt = require("bcrypt");
 class master {
   static register = async (req, res) => {
     try {
-      var master = new masterModel({ ...req.body });
+      var master = new masterModel({
+        ...req.body,
+        completed_contracts: req.master.completed_contracts,
+        pending_contracts: req.master.pending_contracts,
+        canceled_contracts: req.master.canceled_contracts,
+      });
+
       await master.save();
       res.status(200).send({
         API: true,

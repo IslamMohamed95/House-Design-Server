@@ -177,6 +177,7 @@ class contract {
       res.status(200).send({
         API: true,
         contracts: contract_num,
+        admin: req.master,
       });
     } catch (e) {
       res.status(500).send({
