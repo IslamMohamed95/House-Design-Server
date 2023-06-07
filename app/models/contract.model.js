@@ -38,14 +38,14 @@ const contractSchema = new mongoose.Schema(
         stage: {
           type: Number,
           required: true,
-          enum: [0, 1, 2, 3, 4],
+          enum: [0, 1, 2, 3, 4, 5],
           default: 1,
           required: true,
         },
         status: {
           type: String,
           required: true,
-          enum: ["canceled", "under construction", "completed"],
+          enum: ["canceled", "under construction", "finishing", "completed"],
         },
         start_date: { type: String },
         end_date: { type: String },

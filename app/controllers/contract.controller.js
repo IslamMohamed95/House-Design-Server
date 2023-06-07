@@ -84,7 +84,10 @@ class contract {
 
       masters.forEach((m) => {
         contract_num.forEach((c) => {
-          if (c.history.slice(-1)[0].status === "under construction") {
+          if (
+            c.history.slice(-1)[0].status === "under construction" ||
+            c.history.slice(-1)[0].status === "finishing"
+          ) {
             pending.push(c);
           } else if (c.history.slice(-1)[0].status === "completed") {
             completed.push(c);
@@ -163,7 +166,10 @@ class contract {
       let masters = await masterModel.find();
       let contract_num = await contractModel.find();
       masters.forEach((m) => {
-        if (contract.history.slice(-1)[0].status === "under construction") {
+        if (
+          contract.history.slice(-1)[0].status === "under construction" ||
+          contract.history.slice(-1)[0].status === "finishing"
+        ) {
           m.pending_contracts -= 1;
         } else if (contract.history.slice(-1)[0].status === "completed") {
           m.completed_contracts -= 1;
@@ -207,7 +213,10 @@ class contract {
       const masters = await masterModel.find();
       masters.forEach((m) => {
         contracts.forEach((c) => {
-          if (c.history.slice(-1)[0].status === "under construction") {
+          if (
+            c.history.slice(-1)[0].status === "under construction" ||
+            c.history.slice(-1)[0].status === "finishing"
+          ) {
             pending.push(c);
           } else if (c.history.slice(-1)[0].status === "completed") {
             completed.push(c);
