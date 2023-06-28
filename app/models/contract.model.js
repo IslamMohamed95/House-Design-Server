@@ -31,7 +31,7 @@ const contractSchema = new mongoose.Schema(
     history: [
       {
         created_date: {
-          type: Date,
+          type: String,
           required: true,
         },
         assign_date: { type: String, trim: true, required: true },
@@ -45,7 +45,13 @@ const contractSchema = new mongoose.Schema(
         status: {
           type: String,
           required: true,
-          enum: ["canceled", "under construction", "finishing", "completed"],
+          enum: [
+            "pause",
+            "canceled",
+            "under construction",
+            "finishing",
+            "completed",
+          ],
         },
         start_date: { type: String },
         end_date: { type: String },
@@ -54,9 +60,12 @@ const contractSchema = new mongoose.Schema(
           type: String,
           default: null,
         },
+        pauseStatus: { type: Boolean, required: true, default: false },
+        editor: { type: String, trim: true, required: true },
+        lastUpdate: { type: String, default: null },
         seen: {
           type: Boolean,
-          require: true,
+          required: true,
           default: false,
         },
       },

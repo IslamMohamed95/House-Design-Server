@@ -9,7 +9,7 @@ class contract {
       let pending = [];
       let completed = [];
       let canceled = [];
-      let now = new Date().setHours(0, 0, 0, 0);
+      let now = new Date().toLocaleDateString("en-ca");
       let date = new Date(req.body.start_date);
       let endDate = new Date(req.body.end_date);
       let assign_date = new Date(req.body.assign_date);
@@ -48,6 +48,7 @@ class contract {
         stage: req.body.stage,
         status: req.body.status,
         note: req.body.note === "" ? null : req.body.note,
+        editor: req.master.name,
       });
 
       await contract.save();
@@ -195,7 +196,8 @@ class contract {
 
   static edit = async (req, res) => {
     try {
-      let now = new Date().setHours(0, 0, 0, 0);
+      let now = new Date().toLocaleDateString("en-ca");
+
       let pending = [];
       let completed = [];
       let canceled = [];
@@ -205,6 +207,8 @@ class contract {
           history: {
             created_date: now,
             ...req.body,
+            editor: req.master.name,
+            lastUpdate: now,
           },
         },
       });

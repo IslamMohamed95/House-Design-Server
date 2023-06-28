@@ -4,7 +4,7 @@ const contractController = require("../controllers/contract.controller");
 
 route.post("/new/:code", auth("Master"), contractController.new);
 route.post("/delete/:id", auth("Master"), contractController.delete);
-route.post("/edit/:id", auth("Master"), contractController.edit);
+route.post("/edit/:id", auth("Master", "User"), contractController.edit);
 route.post("/seen/:id", contractController.seen);
 
 route.get("/contracts", auth("Master"), contractController.contracts);

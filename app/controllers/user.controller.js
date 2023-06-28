@@ -77,7 +77,6 @@ class user {
 
   static logout = async (req, res) => {
     try {
-      console.log(res.user);
       req.user.tokens = req.user.tokens.filter((t) => {
         return t.token !== req.token;
       });
@@ -126,19 +125,66 @@ class user {
     }
   };
 
-  // static Pause = async (req, res) => {
-  //   try {
-  //     const contract = await contractModel.findByIdAndUpdate(
-  //       { _id: req.params.id },
-  //       {}
-  //     );
-  //   } catch (e) {
-  //     res.status(500).send({
-  //       API: false,
-  //       message: e.message,
-  //     });
-  //   }
-  // };
+  static Pause = async (req, res) => {
+    try {
+      let now = new Date().toLocaleDateString("en-ca");
+      var contract = await contractModel.findOne({ _id: req.params.id });
+
+      contract.history.push({
+        created_date: now,
+        assign_date: contract.history.slice(-1)[0].assign_date,
+        stage: contract.history.slice(-1)[0].stage,
+        status: contract.history.slice(-1)[0].status,
+        start_date: contract.history.slice(-1)[0].start_date,
+        end_date: contract.history.slice(-1)[0].end_date,
+        note: req.body.note,
+        pauseStatus: true,
+        editor: req.user.name,
+        lastUpdate: now,
+        seen: false,
+      });
+      await contract.save();
+      res.status(200).send({
+        API: true,
+        data: contract,
+      });
+    } catch (e) {
+      res.status(500).send({
+        API: false,
+        message: e.message,
+      });
+    }
+  };
+
+  static comment = async (req, res) => {
+    try {
+      let now = new Date().toLocaleDateString("en-ca");
+      var contract = await contractModel.findOne({ _id: req.params.id });
+      contract.history.push({
+        created_date: now,
+        assign_date: contract.history.slice(-1)[0].assign_date,
+        stage: contract.history.slice(-1)[0].stage,
+        status: contract.history.slice(-1)[0].status,
+        start_date: contract.history.slice(-1)[0].start_date,
+        end_date: contract.history.slice(-1)[0].end_date,
+        note: req.body.note,
+        pauseStatus: false,
+        editor: req.user.name,
+        lastUpdate: now,
+        seen: false,
+      });
+      await contract.save();
+      res.status(200).send({
+        API: true,
+        data: contract,
+      });
+    } catch (e) {
+      res.status(500).send({
+        API: false,
+        message: e.message,
+      });
+    }
+  };
 }
 
 module.exports = user;
