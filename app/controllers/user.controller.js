@@ -129,7 +129,7 @@ class user {
     try {
       let now = new Date().toLocaleDateString("en-ca");
       var contract = await contractModel.findOne({ _id: req.params.id });
-
+      contract.checkNote = true;
       contract.history.push({
         created_date: now,
         assign_date: contract.history.slice(-1)[0].assign_date,
@@ -160,6 +160,7 @@ class user {
     try {
       let now = new Date().toLocaleDateString("en-ca");
       var contract = await contractModel.findOne({ _id: req.params.id });
+      contract.checkNote = true;
       contract.history.push({
         created_date: now,
         assign_date: contract.history.slice(-1)[0].assign_date,
