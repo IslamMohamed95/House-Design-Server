@@ -10,7 +10,7 @@ class variation {
         contract_id: req.params.id,
         file: {
           name: req.file.originalname,
-          path: fs.readFileSync("uploads/" + req.file.filename),
+          path: fs.readFileSync(req.file.path),
         },
       });
       await variation.save();
