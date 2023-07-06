@@ -322,6 +322,73 @@ class contract {
       });
     }
   };
+
+  static pauseAcceptance = async (req, res) => {
+    try {
+      let date = new Date();
+      date = date.toLocaleDateString("en-ca");
+      const contract = await contractModel.findById(req.params.id);
+      contract.history.slice(-1)[0].pause_startDate = date;
+      contract.history.slice(-1)[0].confirmPause = true;
+      await contract.save();
+      const contracts = await contractModel.find();
+      res.status(200).send({
+        API: true,
+        data: contracts,
+      });
+    } catch (e) {
+      res.status(500).send({
+        API: false,
+        message: e.message,
+      });
+    }
+  };
+
+  static resetPause = async (req, res) => {
+    try {
+      const contract = await contractModel.findById(req.params.id);
+      let previousDate = new Date(
+        contract.history.slice(-1)[0].pause_startDate
+      );
+      let endDate = new Date().toLocaleDateString("en-ca");
+      contract.history.slice(-1)[0].pause_endDate = endDate;
+      let pauseDays = Math.ceil(
+        Math.abs(previousDate - new Date()) / (1000 * 60 * 60 * 24)
+      );
+      contract.history.slice(-1)[0].pause_days = pauseDays;
+      contract.history.slice(-1)[0].pauseStatus = false;
+      contract.history.slice(-1)[0].confirmPause = false;
+      await contract.save();
+      const contracts = await contractModel.find();
+      res.status(200).send({
+        API: true,
+        data: contracts,
+      });
+    } catch (e) {
+      res.status(500).send({
+        API: false,
+        message: e.message,
+      });
+    }
+  };
+
+  static cancelPause = async (req, res) => {
+    try {
+      const contract = await contractModel.findById(req.params.id);
+      contract.history.slice(-1)[0].pauseStatus = false;
+      await contract.save();
+      const contracts = await contractModel.find();
+      res.status(200).send({
+        API: true,
+        data: contracts,
+      });
+    } catch (e) {
+      res.status(500).send({
+        API: false,
+        message: e.message,
+      });
+    }
+  };
 }
 
 module.exports = contract;

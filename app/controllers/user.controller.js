@@ -186,6 +186,30 @@ class user {
       });
     }
   };
+
+  static reset = async (req, res) => {
+    try {
+      req.body.password = await bcrypt.hash(req.body.password, 10);
+      const account = await userModel.findOneAndUpdate(
+        {
+          email: req.body.email,
+        },
+        {
+          password: req.body.password,
+        }
+      );
+      if (!account) throw new Error("Email is not exist!");
+      account.save();
+      res.status(200).send({
+        API: true,
+      });
+    } catch (e) {
+      res.status(500).send({
+        API: false,
+        message: e.message,
+      });
+    }
+  };
 }
 
 module.exports = user;

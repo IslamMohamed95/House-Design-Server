@@ -61,6 +61,18 @@ const contractSchema = new mongoose.Schema(
           default: null,
         },
         pauseStatus: { type: Boolean, required: true, default: false },
+        confirmPause: { type: Boolean, required: true, default: false },
+        pause_startDate: {
+          type: String,
+          trim: true,
+          default: null,
+        },
+        pause_endDate: {
+          type: String,
+          trim: true,
+          default: null,
+        },
+        pause_days: { type: Number, required: true, default: 0 },
         editor: { type: String, trim: true, required: true },
         lastUpdate: { type: String, default: null },
         seen: {
