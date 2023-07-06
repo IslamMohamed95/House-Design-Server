@@ -7,18 +7,6 @@ class master {
     try {
       var master = new masterModel({
         ...req.body,
-        total_contracts:
-          req.master.total_contracts !== 0 ? req.master.total_contracts : 0,
-        completed_contracts:
-          req.master.completed_contracts !== 0
-            ? req.master.completed_contracts
-            : 0,
-        pending_contracts:
-          req.master.pending_contracts !== 0 ? req.master.pending_contracts : 0,
-        canceled_contracts:
-          req.master.canceled_contracts !== 0
-            ? req.master.canceled_contracts
-            : 0,
       });
 
       await master.save();
