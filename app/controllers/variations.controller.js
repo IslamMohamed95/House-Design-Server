@@ -8,10 +8,7 @@ class variation {
     try {
       const variation = new variationModel({
         contract_id: req.params.id,
-        file: {
-          name: req.file.originalname,
-          path: fs.readFileSync(req.file.path),
-        },
+        file: req.file,
       });
       await variation.save();
       let contract = await contractModel.findByIdAndUpdate(req.params.id, {

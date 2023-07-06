@@ -4,7 +4,7 @@ const upload = require("../middleware/upload");
 const auth = require("../middleware/authorization");
 
 route.post(
-  "/new/:id",
+  "/new",
   auth("Master"),
   upload.single("file"),
   variationController.new
