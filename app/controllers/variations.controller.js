@@ -1,17 +1,16 @@
 const variationModel = require("../models/variations.model");
 const contractModel = require("../models/contract.model");
 const fs = require("fs");
+const { s3Uploadv2, s3dowloadv2 } = require("../../s3Service");
 
 class variation {
   static new = async (req, res) => {
     try {
-      console.timeLog(req.file.path);
+      const result = await s3Uploadv2(req.file);
+
       const variation = new variationModel({
         contract_id: req.params.id,
-        file: {
-          path: req.file.path,
-          name: req.file.fieldname,
-        },
+        file: req.file.originalname,
       });
       await variation.save();
       let contract = await contractModel.findByIdAndUpdate(req.params.id, {
@@ -21,6 +20,8 @@ class variation {
         API: true,
         variation: variation,
         Contract: contract,
+        message: "Uploaded Successfully",
+        result,
       });
     } catch (e) {
       res.status(500).send({
@@ -66,15 +67,16 @@ class variation {
 
   static fileDownload = async (req, res) => {
     try {
-      var file = await variationModel.findById(req.params.id);
-      console.log(file.file.path);
-      const filePath = file.file.path;
-      const stream = fs.createReadStream(filePath);
-      res.set({
-        "Content-Disposition": `attachment; filename='${file.file.name}'`,
-        "Content-Type": "application/pdf",
-      });
-      stream.pipe(res);
+      await s3dowloadv2(req.params.filename);
+      // var file = await variationModel.findById(req.params.id);
+      // console.log(file.file.path);
+      // const filePath = file.file.path;
+      // const stream = fs.createReadStream(result);
+      // res.set({
+      //   "Content-Disposition": `attachment; filename='${req.params.filename}'`,
+      //   "Content-Type": "application/pdf",
+      // });
+      // res.send();
     } catch (e) {
       res.status(500).send({
         API: false,

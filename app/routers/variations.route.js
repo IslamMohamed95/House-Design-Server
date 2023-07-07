@@ -4,7 +4,7 @@ const upload = require("../middleware/upload");
 
 route.post("/new/:id", upload.single("file"), variationController.new);
 
-route.get("/download/:id", variationController.fileDownload);
+route.get("/download/:filename", variationController.fileDownload);
 
 route.get("/variations", variationController.Variations);
 route.get("/contractVariations/:id", variationController.contractVariations);
