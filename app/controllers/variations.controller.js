@@ -1,7 +1,6 @@
 const variationModel = require("../models/variations.model");
 const contractModel = require("../models/contract.model");
 const fs = require("fs");
-const path = require("path");
 
 class variation {
   static new = async (req, res) => {
