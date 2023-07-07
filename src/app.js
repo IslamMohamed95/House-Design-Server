@@ -12,6 +12,7 @@ app.use(
   })
 );
 
+app.use("/upload", express.static("upload"));
 const masterRoute = require("../app/routers/master.route");
 const userRoute = require("../app/routers/user.route");
 const contractRoute = require("../app/routers/contract.route");

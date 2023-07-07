@@ -6,9 +6,13 @@ const path = require("path");
 class variation {
   static new = async (req, res) => {
     try {
+      console.timeLog(req.file.path);
       const variation = new variationModel({
         contract_id: req.params.id,
-        file: req.file,
+        file: {
+          path: req.file.path,
+          name: req.file.fieldname,
+        },
       });
       await variation.save();
       let contract = await contractModel.findByIdAndUpdate(req.params.id, {
@@ -64,18 +68,14 @@ class variation {
   static fileDownload = async (req, res) => {
     try {
       var file = await variationModel.findById(req.params.id);
+      console.log(file.file.path);
       const filePath = file.file.path;
-      fs.readFile(filePath, (err, data) => {
-        if (err) {
-          console.error(err);
-          res.statusCode = 500;
-          res.end("Internal Server Error");
-          return;
-        }
-        res.setHeader("Content-Type", "application/pdf");
-        res.setHeader("Content-Disposition", `attachment; filename=file.pdf`);
-        res.end(data);
+      const stream = fs.createReadStream(filePath);
+      res.set({
+        "Content-Disposition": `attachment; filename='${file.file.name}'`,
+        "Content-Type": "application/pdf",
       });
+      stream.pipe(res);
     } catch (e) {
       res.status(500).send({
         API: false,
