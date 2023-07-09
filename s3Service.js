@@ -14,8 +14,9 @@ exports.s3dowloadv2 = async (filename) => {
   const param = {
     Bucket: process.env.AWS_BUCKET_NAME,
     Key: `upload/${filename}`,
+    Body: filename.buffer,
   };
-  return await s3.getObject(param, { stream: true }, (err, data) => {
+  await s3.getObject(param, { stream: true }, (err, data) => {
     res.attachment("download");
     return data.Stream.pipe(res);
   });

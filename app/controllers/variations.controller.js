@@ -67,7 +67,7 @@ class variation {
 
   static fileDownload = async (req, res) => {
     try {
-      await s3dowloadv2(req.params.filename);
+      s3dowloadv2(req.params.filename);
       // var file = await variationModel.findById(req.params.id);
       // console.log(file.file.path);
       // const filePath = file.file.path;
