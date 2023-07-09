@@ -1,6 +1,4 @@
 const { S3 } = require("aws-sdk");
-const fs = require("fs");
-const path = require("path");
 exports.s3Uploadv2 = async (file) => {
   const s3 = new S3();
   const param = {
