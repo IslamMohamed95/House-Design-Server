@@ -64,26 +64,6 @@ class variation {
       });
     }
   };
-
-  static fileDownload = async (req, res) => {
-    try {
-      s3dowloadv2(req.params.filename);
-      // var file = await variationModel.findById(req.params.id);
-      // console.log(file.file.path);
-      // const filePath = file.file.path;
-      // const stream = fs.createReadStream(result);
-      // res.set({
-      //   "Content-Disposition": `attachment; filename='${req.params.filename}'`,
-      //   "Content-Type": "application/pdf",
-      // });
-      // res.send();
-    } catch (e) {
-      res.status(500).send({
-        API: false,
-        message: e.message,
-      });
-    }
-  };
 }
 
 module.exports = variation;
