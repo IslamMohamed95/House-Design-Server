@@ -8,7 +8,7 @@ const s3Config = {
 };
 
 exports.s3Uploadv2 = async (file) => {
-  const s3 = new S3();
+  const s3 = new S3(s3Config);
   const param = {
     Bucket: process.env.AWS_BUCKET_NAME,
     Key: `upload/${file.originalname}`,
