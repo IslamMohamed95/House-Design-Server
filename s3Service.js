@@ -2,8 +2,8 @@ const { S3 } = require("aws-sdk");
 
 const s3Config = {
   apiVersion: "2006-03-01",
-  accessKeyId: "ASIAVOXMTNKRTCAMRV4W",
-  secretAccessKey: "K7hQyb3OjQrSSTkI84Z/ZWVRIAVNkMALZMcmVBV5",
+  accessKeyId: "ASIAVOXMTNKRZFQS4FN5",
+  secretAccessKey: "HTq0uNVH272C/Ma892RPuRwmrsmWGnyc3Bsw0QHn",
   region: "eu-central-1",
 };
 
