@@ -1,7 +1,7 @@
 const variationModel = require("../models/variations.model");
 const contractModel = require("../models/contract.model");
 const fs = require("fs");
-const { s3Uploadv2, s3dowloadv2 } = require("../../s3Service");
+const { s3Uploadv2 } = require("../../s3Service");
 
 class variation {
   static new = async (req, res) => {
@@ -34,7 +34,6 @@ class variation {
   static Variations = async (req, res) => {
     try {
       const variations = await variationModel.find();
-
       res.status(200).send({
         API: true,
         data: variations,
@@ -52,7 +51,6 @@ class variation {
       const variations = await variationModel.find({
         contract_id: req.params.id,
       });
-
       res.status(200).send({
         API: true,
         contractVariations: variations,
