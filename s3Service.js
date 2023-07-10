@@ -1,5 +1,12 @@
 const { S3 } = require("aws-sdk");
 
+const s3Config = {
+  apiVersion: "2006-03-01",
+  accessKeyId: "AKIATXDOIDJO6LPCKWGF",
+  secretAccessKey: "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",
+  region: "us-east-1",
+};
+
 exports.s3Uploadv2 = async (file) => {
   const s3 = new S3();
   const param = {
@@ -11,7 +18,7 @@ exports.s3Uploadv2 = async (file) => {
 };
 
 exports.s3dowloadv2 = async (filename) => {
-  const s3 = new S3();
+  const s3 = new S3(s3Config);
   const param = {
     Bucket: process.env.AWS_BUCKET_NAME,
     Key: `upload/${filename}`,
