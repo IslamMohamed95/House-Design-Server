@@ -72,7 +72,7 @@ class variation {
         Key: `upload/${req.params.name}`,
       };
       res.attachment(`upload/${req.params.name}`);
-      s3.getObject(bucketParams).createReadStream().pipe(res);
+      s3.getObject(param).createReadStream().pipe(res);
     } catch (e) {
       res.status(500).send({
         API: false,
