@@ -12,7 +12,6 @@ class master {
         pending_contracts: req.master.pending_contracts,
         canceled_contracts: req.master.canceled_contracts,
       });
-
       await master.save();
       res.status(200).send({
         API: true,
