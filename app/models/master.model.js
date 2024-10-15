@@ -51,6 +51,15 @@ masterSchema.pre("save", async function () {
   if (master.isModified("password")) {
     master.password = await bcrypt.hash(master.password, 10);
   }
+  if (this.completed_contracts == undefined) {
+    this.completed_contracts = 0;
+  }
+  if (this.pending_contracts == undefined) {
+    this.pending_contracts = 0;
+  }
+  if (this.canceled_contracts == undefined) {
+    this.canceled_contracts = 0;
+  }
 });
 
 const masterModel = mongoose.model("Master", masterSchema);

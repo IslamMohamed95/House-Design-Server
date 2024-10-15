@@ -3,6 +3,6 @@ const mongoose = require("mongoose");
 
 //mongoose.set("strictQuery", true);
 
-mongoose.connect(`${process.env.DB_PORT}${process.env.DB_NAME}`, () => {
+mongoose.connect(`mongodb+srv://islam:271195@housed.ims3c.mongodb.net/`, () => {
   console.log("database is connected");
 });
