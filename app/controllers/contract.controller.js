@@ -9,7 +9,7 @@ class contract {
       let pending = [];
       let completed = [];
       let canceled = [];
-      let now = new Date().toLocaleDateString("en-ca");
+      let now = new Date().setHours(0, 0, 0, 0);
       let date = new Date(req.body.start_date);
       let endDate = new Date(req.body.end_date);
       let assign_date = new Date(req.body.assign_date);
@@ -48,7 +48,6 @@ class contract {
         stage: req.body.stage,
         status: req.body.status,
         note: req.body.note === "" ? null : req.body.note,
-        editor: req.master.name,
       });
 
       await contract.save();
@@ -86,11 +85,13 @@ class contract {
       masters.forEach((m) => {
         contract_num.forEach((c) => {
           if (
-            c.history.slice(-1)[0].status === "under construction" ||
-            c.history.slice(-1)[0].status === "finishing"
+            c.history.slice(-1)[0].status === "pending" ||
+            c.history.slice(-1)[0].status === "completed" ||
+            c.history.slice(-1)[0].status === "process 1" ||
+            c.history.slice(-1)[0].status === "process 2"
           ) {
             pending.push(c);
-          } else if (c.history.slice(-1)[0].status === "completed") {
+          } else if (c.history.slice(-1)[0].status === "finished") {
             completed.push(c);
           } else if (c.history.slice(-1)[0].status === "canceled") {
             canceled.push(c);
@@ -139,7 +140,7 @@ class contract {
       });
       res.status(200).send({
         API: true,
-        data: contracts,
+        contracts: contracts,
       });
     } catch (e) {
       res.status(500).send({
@@ -152,27 +153,20 @@ class contract {
   static delete = async (req, res) => {
     try {
       const contract = await contractModel.findById(req.params.id);
-      const target = await contractModel.find({
-        user_code: contract.user_code,
-      });
-      if (target.length === 1) {
-        const user = await userModel.findOneAndDelete({
-          code: contract.user_code,
-        });
-      }
       await contractModel.findOneAndDelete({
         _id: req.params.id,
       });
-
       let masters = await masterModel.find();
       let contract_num = await contractModel.find();
       masters.forEach((m) => {
         if (
-          contract.history.slice(-1)[0].status === "under construction" ||
-          contract.history.slice(-1)[0].status === "finishing"
+          contract.history.slice(-1)[0].status === "pending" ||
+          contract.history.slice(-1)[0].status === "completed" ||
+          contract.history.slice(-1)[0].status === "process 1" ||
+          contract.history.slice(-1)[0].status === "process 2"
         ) {
           m.pending_contracts -= 1;
-        } else if (contract.history.slice(-1)[0].status === "completed") {
+        } else if (contract.history.slice(-1)[0].status === "finished") {
           m.completed_contracts -= 1;
         } else if (contract.history.slice(-1)[0].status === "canceled") {
           m.canceled_contracts -= 1;
@@ -184,7 +178,6 @@ class contract {
       res.status(200).send({
         API: true,
         contracts: contract_num,
-        admin: req.master,
       });
     } catch (e) {
       res.status(500).send({
@@ -196,8 +189,7 @@ class contract {
 
   static edit = async (req, res) => {
     try {
-      let now = new Date().toLocaleDateString("en-ca");
-
+      let now = new Date().setHours(0, 0, 0, 0);
       let pending = [];
       let completed = [];
       let canceled = [];
@@ -207,8 +199,6 @@ class contract {
           history: {
             created_date: now,
             ...req.body,
-            editor: req.master.name,
-            lastUpdate: now,
           },
         },
       });
@@ -218,11 +208,13 @@ class contract {
       masters.forEach((m) => {
         contracts.forEach((c) => {
           if (
-            c.history.slice(-1)[0].status === "under construction" ||
-            c.history.slice(-1)[0].status === "finishing"
+            c.history.slice(-1)[0].status === "pending" ||
+            c.history.slice(-1)[0].status === "completed" ||
+            c.history.slice(-1)[0].status === "process 1" ||
+            c.history.slice(-1)[0].status === "process 2"
           ) {
             pending.push(c);
-          } else if (c.history.slice(-1)[0].status === "completed") {
+          } else if (c.history.slice(-1)[0].status === "finished") {
             completed.push(c);
           } else if (c.history.slice(-1)[0].status === "canceled") {
             canceled.push(c);
@@ -296,91 +288,6 @@ class contract {
       res.status(200).send({
         API: true,
         data: client,
-      });
-    } catch (e) {
-      res.status(500).send({
-        API: false,
-        message: e.message,
-      });
-    }
-  };
-
-  static userContracts = async (req, res) => {
-    try {
-      const contracts = await contractModel.find({
-        user_code: req.params.code,
-      });
-
-      res.status(200).send({
-        API: true,
-        data: contracts,
-      });
-    } catch (e) {
-      res.status(500).send({
-        API: false,
-        message: e.message,
-      });
-    }
-  };
-
-  static pauseAcceptance = async (req, res) => {
-    try {
-      let date = new Date();
-      date = date.toLocaleDateString("en-ca");
-      const contract = await contractModel.findById(req.params.id);
-      contract.history.slice(-1)[0].pause_startDate = date;
-      contract.history.slice(-1)[0].confirmPause = true;
-      await contract.save();
-      const contracts = await contractModel.find();
-      res.status(200).send({
-        API: true,
-        data: contracts,
-      });
-    } catch (e) {
-      res.status(500).send({
-        API: false,
-        message: e.message,
-      });
-    }
-  };
-
-  static resetPause = async (req, res) => {
-    try {
-      const contract = await contractModel.findById(req.params.id);
-      let previousDate = new Date(
-        contract.history.slice(-1)[0].pause_startDate
-      );
-      let endDate = new Date().toLocaleDateString("en-ca");
-      contract.history.slice(-1)[0].pause_endDate = endDate;
-      let pauseDays = Math.ceil(
-        Math.abs(previousDate - new Date()) / (1000 * 60 * 60 * 24)
-      );
-      contract.history.slice(-1)[0].pause_days = pauseDays;
-      contract.history.slice(-1)[0].pauseStatus = false;
-      contract.history.slice(-1)[0].confirmPause = false;
-      await contract.save();
-      const contracts = await contractModel.find();
-      res.status(200).send({
-        API: true,
-        data: contracts,
-      });
-    } catch (e) {
-      res.status(500).send({
-        API: false,
-        message: e.message,
-      });
-    }
-  };
-
-  static cancelPause = async (req, res) => {
-    try {
-      const contract = await contractModel.findById(req.params.id);
-      contract.history.slice(-1)[0].pauseStatus = false;
-      await contract.save();
-      const contracts = await contractModel.find();
-      res.status(200).send({
-        API: true,
-        data: contracts,
       });
     } catch (e) {
       res.status(500).send({

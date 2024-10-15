@@ -48,7 +48,7 @@ class sales {
       ];
       const sale = new salesModel({
         ...req.body,
-        annual_target: req.body.monthly_target * 12,
+        annual_target: req.master.annual_target,
         monthly_target: req.body.monthly_target,
         history: histories,
       });
@@ -97,22 +97,6 @@ class sales {
         sales: salesName,
         salesAchievements: salesAchievements,
         target: monthly_target,
-      });
-    } catch (e) {
-      res.status(500).send({
-        API: false,
-        message: e.message,
-      });
-    }
-  };
-
-  static delete = async (req, res) => {
-    try {
-      await salesModel.findByIdAndDelete({ _id: req.params.id });
-      const allSales = await salesModel.find();
-      res.status(200).send({
-        API: true,
-        data: allSales,
       });
     } catch (e) {
       res.status(500).send({

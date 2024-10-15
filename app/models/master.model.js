@@ -29,7 +29,10 @@ const masterSchema = new mongoose.Schema(
       required: true,
       default: "Master",
     },
-
+    annual_target: {
+      type: Number,
+      required: true,
+    },
     total_contracts: {
       type: Number,
       default: 0,
@@ -50,15 +53,6 @@ masterSchema.pre("save", async function () {
   const master = this;
   if (master.isModified("password")) {
     master.password = await bcrypt.hash(master.password, 10);
-  }
-  if (this.completed_contracts == undefined) {
-    this.completed_contracts = 0;
-  }
-  if (this.pending_contracts == undefined) {
-    this.pending_contracts = 0;
-  }
-  if (this.canceled_contracts == undefined) {
-    this.canceled_contracts = 0;
   }
 });
 

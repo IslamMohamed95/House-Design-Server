@@ -1,17 +1,17 @@
 const variationModel = require("../models/variations.model");
 const contractModel = require("../models/contract.model");
 const fs = require("fs");
-const { s3Uploadv2 } = require("../../s3Service");
-const { S3 } = require("aws-sdk");
+const path = require("path");
 
 class variation {
   static new = async (req, res) => {
     try {
-      const result = await s3Uploadv2(req.file);
-
       const variation = new variationModel({
         contract_id: req.params.id,
-        file: req.file.originalname,
+        file: {
+          name: req.file.originalname,
+          path: "uploads/" + req.file.filename,
+        },
       });
       await variation.save();
       let contract = await contractModel.findByIdAndUpdate(req.params.id, {
@@ -21,8 +21,6 @@ class variation {
         API: true,
         variation: variation,
         Contract: contract,
-        message: "Uploaded Successfully",
-        result,
       });
     } catch (e) {
       res.status(500).send({
@@ -35,6 +33,7 @@ class variation {
   static Variations = async (req, res) => {
     try {
       const variations = await variationModel.find();
+
       res.status(200).send({
         API: true,
         data: variations,
@@ -52,6 +51,7 @@ class variation {
       const variations = await variationModel.find({
         contract_id: req.params.id,
       });
+
       res.status(200).send({
         API: true,
         contractVariations: variations,
@@ -64,15 +64,21 @@ class variation {
     }
   };
 
-  static Download = async (req, res) => {
+  static fileDownload = async (req, res) => {
     try {
-      const s3 = new S3();
-      const param = {
-        Bucket: process.env.AWS_BUCKET_NAME,
-        Key: `upload/${req.params.name}`,
-      };
-      res.attachment(`upload/${req.params.name}`);
-      s3.getObject(param).createReadStream().pipe(res);
+      var file = await variationModel.findById(req.params.id);
+      const filePath = file.file.path;
+      fs.readFile(filePath, (err, data) => {
+        if (err) {
+          console.error(err);
+          res.statusCode = 500;
+          res.end("Internal Server Error");
+          return;
+        }
+        res.setHeader("Content-Type", "application/pdf");
+        res.setHeader("Content-Disposition", `attachment; filename=file.pdf`);
+        res.end(data);
+      });
     } catch (e) {
       res.status(500).send({
         API: false,

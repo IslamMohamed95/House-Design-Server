@@ -11,6 +11,7 @@ app.use(
     origin: "*",
   })
 );
+// app.use(express.static("uploads"));
 
 const masterRoute = require("../app/routers/master.route");
 const userRoute = require("../app/routers/user.route");

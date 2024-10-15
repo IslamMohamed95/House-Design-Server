@@ -5,9 +5,7 @@ const bcrypt = require("bcrypt");
 class master {
   static register = async (req, res) => {
     try {
-      var master = new masterModel({
-        ...req.body,
-      });
+      var master = new masterModel({ ...req.body });
       await master.save();
       res.status(200).send({
         API: true,
@@ -49,30 +47,6 @@ class master {
   static account = async (req, res) => {
     res.status(200).send(req.master);
     try {
-    } catch (e) {
-      res.status(500).send({
-        API: false,
-        message: e.message,
-      });
-    }
-  };
-
-  static reset = async (req, res) => {
-    try {
-      req.body.password = await bcrypt.hash(req.body.password, 10);
-      const account = await masterModel.findOneAndUpdate(
-        {
-          email: req.body.email,
-        },
-        {
-          password: req.body.password,
-        }
-      );
-      if (!account) throw new Error("Email is not exist!");
-      account.save();
-      res.status(200).send({
-        API: true,
-      });
     } catch (e) {
       res.status(500).send({
         API: false,
