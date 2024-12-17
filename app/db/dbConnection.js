@@ -1,6 +1,10 @@
-const mongoose = require("mongoose");
 require("dotenv").config();
-const DB = process.env.DataBase;
-mongoose.connect(`${DB}`, () => {
-  console.log("Database is connected");
+const mongoose = require("mongoose");
+
+mongoose.set("strictQuery", true);
+mongoose.connect(`${process.env.DB_PORT}${process.env.DB_NAME}`, () => {
+  console.log("database is connected");
 });
+
+//"mongodb+srv://islammooma95:271195@house-deisgn.k1syohe.mongodb.net/?retryWrites=true&w=majority"
+//`${process.env.DB_PORT}${process.env.DB_NAME}`

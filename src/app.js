@@ -11,8 +11,8 @@ app.use(
     origin: "*",
   })
 );
-// app.use(express.static("uploads"));
 
+app.use("/upload", express.static("upload"));
 const masterRoute = require("../app/routers/master.route");
 const userRoute = require("../app/routers/user.route");
 const contractRoute = require("../app/routers/contract.route");
