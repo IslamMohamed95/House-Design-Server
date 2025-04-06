@@ -1,8 +1,7 @@
 const variationModel = require("../models/variations.model");
 const contractModel = require("../models/contract.model");
-const fs = require("fs");
 const { s3Uploadv2 } = require("../../s3Service");
-const { S3 } = require("aws-sdk");
+const { S3Client, GetObjectCommand } = require("@aws-sdk/client-s3");
 
 class variation {
   static new = async (req, res) => {
@@ -66,13 +65,13 @@ class variation {
 
   static Download = async (req, res) => {
     try {
-      const s3 = new S3();
+      const s3 = new S3Client({ region: "us-east-1" });
       const param = {
         Bucket: process.env.AWS_BUCKET_NAME,
         Key: `upload/${req.params.name}`,
       };
       res.attachment(`upload/${req.params.name}`);
-      s3.getObject(param).createReadStream().pipe(res);
+      await s3.send(new GetObjectCommand(param)).createWriteStream().pipe(res);
     } catch (e) {
       res.status(500).send({
         API: false,

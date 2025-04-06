@@ -6,7 +6,7 @@ class master {
   static register = async (req, res) => {
     try {
       const exitingAdmin = await masterModel.find({ role: "Master" });
-      if (!exitingAdmin) {
+      if (exitingAdmin.length === 0) {
         var master = new masterModel({
           ...req.body,
         });
