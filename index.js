@@ -1,5 +1,5 @@
 const app = require("./src/app");
-require("dotenv").config();
+require("dotenv").config({ path: ".env.production" });
 
 PORT = process.env.SERVER_PORT;
 
